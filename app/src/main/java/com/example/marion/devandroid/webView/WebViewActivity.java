@@ -55,6 +55,7 @@ public class WebViewActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View view) {
         if(view == req){
+            urlString = url.getText().toString();
             webView.loadUrl(url.getText().toString());
             //webView.loadUrl("file:///android_asset/index.html");
             //webView.loadData("<html><body>Bonjour !</body></html>« , "text/html", "UTF-8");
@@ -173,9 +174,9 @@ public class WebViewActivity extends AppCompatActivity implements View.OnClickLi
 
         protected void onPostExecute (Object o){
             //          progressBar.setVisibility(View.GONE);
-
+            answer.setText("");
             answer.setText(result);
-
+            cpEditText.setText("");
             String listCity = "";
             for (int i =0;i<villeBeanArrayList.size();i++){
 

@@ -1,8 +1,8 @@
 package com.example.marion.devandroid.velo;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.marion.devandroid.R;
@@ -89,7 +90,7 @@ public class VeloMapsActivity extends FragmentActivity implements OnMapReadyCall
 
     @Override
     public View getInfoContents(Marker marker) {
-
+/**
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setView(alertLayout);
         LayoutInflater inflater = getLayoutInflater();
@@ -107,13 +108,43 @@ public class VeloMapsActivity extends FragmentActivity implements OnMapReadyCall
 
         AlertDialog dialog = alert.create();
         dialog.show();
-        return null;
+ **/
+        View view = LayoutInflater.from(this).inflate(R.layout.marker_velo, null);
+
+        TextView tvStand = view.findViewById(R.id.textVBikeStnd);
+        TextView tvBikes = view.findViewById(R.id.textVBikes);
+        TextView tvAddress = view.findViewById(R.id.textVAdress);
+        ImageView iv = view.findViewById(R.id.velo);
+
+        StationBean sb = (StationBean) marker.getTag();
+        tvStand.setText(sb.getAvailable_bike_stands()+" places disponibles");
+        tvBikes.setText(sb.getAvailable_bikes()+" vélos libres");
+        tvAddress.setText(sb.getName()+" "+sb.getAddress());
+
+        switch (sb.getStatus()){
+            case "OPEN":
+                if(Integer.parseInt(sb.getAvailable_bike_stands())>0
+                        && Integer.parseInt(sb.getAvailable_bikes())>0){
+                    iv.setColorFilter(Color.GREEN);
+                }else if(Integer.parseInt(sb.getAvailable_bike_stands())>0){
+                    iv.setColorFilter(Color.CYAN);
+                }else if(Integer.parseInt(sb.getAvailable_bikes())>0){
+                    iv.setColorFilter(Color.RED);
+                }
+                break;
+
+            case "CLOSED":
+               iv.setColorFilter(Color.MAGENTA);
+        }
+        iv.setImageResource(R.drawable.flamingo);
+
+        return view;
+
     }
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        
-
+        marker.hideInfoWindow();
     }
 
     public class CPAsyncTask extends AsyncTask {
@@ -208,32 +239,32 @@ public class VeloMapsActivity extends FragmentActivity implements OnMapReadyCall
             //On a la permission
             mMap.setMyLocationEnabled(true);
             mMap.moveCamera(CameraUpdateFactory.newLatLng(toulouse));
-        }
+        //}
 
-        if(!mesStations.isEmpty()){
-            for(StationBean stationBean : mesStations){
+        if(!mesStations.isEmpty()) {
+            for (StationBean stationBean : mesStations) {
 
                 double lat = Double.parseDouble(stationBean.getPosition().getLat());
 
                 double lng = Double.parseDouble(stationBean.getPosition().getLng());
 
-                LatLng marker= new LatLng(lat, lng);
+                LatLng marker = new LatLng(lat, lng);
                 MarkerOptions markerVelo = new MarkerOptions();
                 markerVelo.title(stationBean.getName()
-                        +"Places dispo : "+stationBean.getAvailable_bike_stands()
-                        +"Vélos : "+stationBean.getAvailable_bikes());
+                        + "Places dispo : " + stationBean.getAvailable_bike_stands()
+                        + "Vélos : " + stationBean.getAvailable_bikes());
 
-                switch (stationBean.getStatus()){
+                switch (stationBean.getStatus()) {
                     case "OPEN":
-                        if(Integer.parseInt(stationBean.getAvailable_bike_stands())>0
-                                && Integer.parseInt(stationBean.getAvailable_bikes())>0){
+                        if (Integer.parseInt(stationBean.getAvailable_bike_stands()) > 0
+                                && Integer.parseInt(stationBean.getAvailable_bikes()) > 0) {
                             markerVelo.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                        }else if(Integer.parseInt(stationBean.getAvailable_bike_stands())>0){
+                        } else if (Integer.parseInt(stationBean.getAvailable_bike_stands()) > 0) {
                             markerVelo.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
-                        }else if(Integer.parseInt(stationBean.getAvailable_bikes())>0){
+                        } else if (Integer.parseInt(stationBean.getAvailable_bikes()) > 0) {
                             markerVelo.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                         }
-                    break;
+                        break;
 
                     case "CLOSED":
                         markerVelo.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
@@ -242,18 +273,19 @@ public class VeloMapsActivity extends FragmentActivity implements OnMapReadyCall
 
                 markerVelo.position(marker);
 
-                    mMap.addMarker(markerVelo).setTag(stationBean);
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(markerVelo.getPosition()));
+                mMap.addMarker(markerVelo).setTag(stationBean);
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(markerVelo.getPosition()));
 
 
-                    mMap.setInfoWindowAdapter(this);
-                    mMap.setOnInfoWindowClickListener(this);
-                }
-
-
+                mMap.setInfoWindowAdapter(this);
+                mMap.setOnInfoWindowClickListener(this);
+                mMap.animateCamera(CameraUpdateFactory.zoomBy(7));
+            }
 
         }
-        // j'affiche mes marqueurs
+
+        }
+
 
 
 
