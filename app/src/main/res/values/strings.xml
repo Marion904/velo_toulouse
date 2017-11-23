@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">DevAndroid</string>
+    <string name="adTitle">L\'alerte dialogue</string>
+    <string name="adMessage">On lance un Toast?</string>
+    <string name="ok">Ok</string>
+    <string name="toastText">Voici un toast</string>
+    <string name="adMenu">Alert dialog</string>
+    <string name="dpMenu">DatePicker</string>
+    <string name="tpMenu">Time Picker</string>
+    <string name="servMenu">Service</string>
+    <string name="toastFineLocRefused">Accès refusé : merci d\'accepter la localisation</string>
+    <string name="startBtn">Start</string>
+    <string name="stop">Stop</string>
+    <string name="nowBtn">Maintenant</string>
+    <string name="afterBtn">Après</string>
+    <string name="notifLongue">Scheduled</string>
+    <string name="messageNow">c\'est la notif immédiate</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="Notif">Notification</string>
+    <string name="maps">Googlemap</string>
+    <string name="myAPIkey">  AIzaSyAZHcXGU5S1hvBUi-6C2Kky0hgnqzBskHA </string>
+    <string name="maVille">C\'est là!</string>
+    <string name="asyncBut">click</string>
+    <string name="alertDial">Déjà fait/ en cours</string>
+    <string name="alertTitle">Ok</string>
+    <string name="go">Requete</string>
+    <string name="entrer_le_cp">entrer le cp</string>
+</resources>
