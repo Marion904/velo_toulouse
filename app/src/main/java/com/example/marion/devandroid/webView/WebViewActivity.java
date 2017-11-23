@@ -13,7 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.marion.devandroid.R;
-import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -131,18 +130,6 @@ public class WebViewActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
-
-/**
-    public class WebServiceUtils {
-        String URLWEBSERVICE = "http://www.citysearch-api.com/fr/city?login=webserviceexemple&apikey=sof940dd26cf107eabf8bf6827f87c3ca8e8d82546&cp=";
-        String cp;
-        public String result;
-        String urlString = URLWEBSERVICE + cp;
-
-        public WebServiceUtils(String urlString) {
-            this.urlString = urlString;
-        }
-**/
     public class CPAsyncTask extends AsyncTask {
 
         String urlS;

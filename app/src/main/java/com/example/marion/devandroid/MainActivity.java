@@ -27,6 +27,7 @@ import com.example.marion.devandroid.asyncTask.AsyncTaskActivity;
 import com.example.marion.devandroid.broadcast.WifiScanReceiver;
 import com.example.marion.devandroid.notification.NotifActivity;
 import com.example.marion.devandroid.service.ServiceActivity;
+import com.example.marion.devandroid.velo.VeloMapsActivity;
 import com.example.marion.devandroid.webView.WebViewActivity;
 
 import java.util.ArrayList;
@@ -34,7 +35,6 @@ import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
-
 
     static final int ID_ALERT_DIALOG = 1;
     static final int ID_DATE_PICKER = 2;
@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     static final int ID_MAPS = 6;
     static final int ASYNC_TASK = 7;
     static final int WEB_VIEW=8;
+    static final int VELO_ACTIVITY = 9;
 
     static final int FINE_LOCATION_REQ_CODE = 100;
 
@@ -83,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         menu.add(0,ID_MAPS,0,R.string.maps);
         menu.add(0,ASYNC_TASK,0,"AsyncTask");
         menu.add(0,WEB_VIEW,0,"WebView");
+        menu.add(0,VELO_ACTIVITY, 0, "Vélib'");
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -138,17 +140,21 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                             FINE_LOCATION_REQ_CODE);
 
                 }
+                break;
 
             case ID_NOTIFICATION:
                 Intent notifIntent = new Intent(MainActivity.this, NotifActivity.class);
                 startActivity(notifIntent);
+                break;
 
             case ID_MAPS:
                 Intent mapIntent = new Intent(MainActivity.this, MapsActivity.class);
                 startActivity(mapIntent);
+                break;
 
             case ASYNC_TASK:
                 startActivity(new Intent(MainActivity.this, AsyncTaskActivity.class));
+                break;
 
             case WEB_VIEW:
                 if(isInternetConnexion(this)) {
@@ -157,7 +163,16 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 else{
                     Toast.makeText(this, "Pas de connection!!", Toast.LENGTH_SHORT).show();
                 }
-            }
+                break;
+            case VELO_ACTIVITY:
+                if (isInternetConnexion(this)){
+                startActivity(new Intent(MainActivity.this, VeloMapsActivity.class));
+                }
+                else{
+                    Toast.makeText(MainActivity.this, "Connexion perdue", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
 
         return super.onOptionsItemSelected(item);
     }

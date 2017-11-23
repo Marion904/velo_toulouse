@@ -25,4 +25,6 @@
     <string name="alertTitle">Ok</string>
     <string name="go">Requete</string>
     <string name="entrer_le_cp">entrer le cp</string>
+    <string name="JCDecaux_api_key"></string>
+    <string name="title_activity_velo_maps">Map</string>
 </resources>
