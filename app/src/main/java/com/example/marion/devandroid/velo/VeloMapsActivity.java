@@ -1,6 +1,7 @@
 package com.example.marion.devandroid.velo;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -11,6 +12,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,15 +25,17 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
-public class VeloMapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.InfoWindowAdapter, GoogleMap.OnInfoWindowClickListener  {
+public class VeloMapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.InfoWindowAdapter, GoogleMap.OnInfoWindowClickListener, View.OnClickListener {
 
     private GoogleMap mMap;
     private View alertLayout;
+    private Button ListButton;
     private ArrayList<StationBean> stationBeans;
-            private ArrayList<StationBean> mesStations= new ArrayList<>();
+    private ArrayList<StationBean> mesStations= new ArrayList<>();
     private String ville = "toulouse";
     LatLng toulouse = new LatLng(43.59999, 1.43333);
     static final int FINE_LOCATION_REQ_CODE = 101;
@@ -45,6 +49,9 @@ public class VeloMapsActivity extends FragmentActivity implements OnMapReadyCall
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        ListButton = findViewById(R.id.ListButton);
+        ListButton.setOnClickListener(this);
 
         //On vérifie si on a la permission
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -147,6 +154,17 @@ public class VeloMapsActivity extends FragmentActivity implements OnMapReadyCall
         marker.hideInfoWindow();
     }
 
+    @Override
+    public void onClick(View view) {
+
+        Gson gson = new Gson();
+        String JSONlist = gson.toJson(mesStations);
+        Intent i = new Intent( VeloMapsActivity.this, RecyclerActivity.class);
+        i.putExtra("key",JSONlist);
+        startActivity(i);
+
+    }
+
     public class CPAsyncTask extends AsyncTask {
 
         String urlS;
@@ -191,15 +209,11 @@ public class VeloMapsActivity extends FragmentActivity implements OnMapReadyCall
         protected void onPostExecute (Object o){
             //          progressBar.setVisibility(View.GONE);
 
-
             mesStations.clear();
             mesStations.addAll(stationBeans);
             refreshScreen();
 
             //urlS.equals(null);
-
-
-
 
         }
 
