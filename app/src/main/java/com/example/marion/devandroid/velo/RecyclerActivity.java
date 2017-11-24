@@ -8,8 +8,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.example.marion.devandroid.R;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 
@@ -25,9 +23,10 @@ public class RecyclerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recycler);
 
         Intent i = getIntent();
-        String jsonifiy = i.getExtras().getString("key");
-        Gson gson = new Gson();
-        myStations = gson.fromJson(jsonifiy, new TypeToken<ArrayList<StationBean>>(){}.getType());
+        myStations = i.getParcelableArrayListExtra("keyList");
+        //String jsonifiy = i.getExtras().getString("key");
+        //Gson gson = new Gson();
+       // myStations = gson.fromJson(jsonifiy, new TypeToken<ArrayList<StationBean>>(){}.getType());
 
         rv = findViewById(R.id.rv);
 
@@ -36,6 +35,18 @@ public class RecyclerActivity extends AppCompatActivity {
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setItemAnimator(new DefaultItemAnimator());
 
+    }
+
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            myStations = savedInstanceState.getParcelableArrayList("keyList");
+//On passe par une variable intermediaire, sinon le cast ne passe pas.
+            ArrayList<StationBean> temp=savedInstanceState.getParcelableArrayList("keyList");
+            myStations.clear();
+            if (temp != null) {
+                myStations.addAll(temp);
+            }
+        }
     }
 
 

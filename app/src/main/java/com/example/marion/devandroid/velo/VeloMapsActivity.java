@@ -41,6 +41,7 @@ public class VeloMapsActivity extends FragmentActivity implements OnMapReadyCall
     static final int FINE_LOCATION_REQ_CODE = 101;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,14 +80,9 @@ public class VeloMapsActivity extends FragmentActivity implements OnMapReadyCall
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
         mMap.moveCamera(CameraUpdateFactory.newLatLng(toulouse));
 
-
-
         refreshScreen();
-
-
 
     }
 
@@ -157,13 +153,18 @@ public class VeloMapsActivity extends FragmentActivity implements OnMapReadyCall
     @Override
     public void onClick(View view) {
 
-        Gson gson = new Gson();
-        String JSONlist = gson.toJson(mesStations);
-        Intent i = new Intent( VeloMapsActivity.this, RecyclerActivity.class);
-        i.putExtra("key",JSONlist);
-        startActivity(i);
+        if (view ==ListButton){
+
+
+            Gson gson = new Gson();
+            String JSONlist = gson.toJson(mesStations);
+            Intent i = new Intent( VeloMapsActivity.this, RecyclerActivity.class);
+            i.putExtra("keyList",mesStations);
+            startActivity(i);
+        }
 
     }
+
 
     public class CPAsyncTask extends AsyncTask {
 
@@ -300,9 +301,10 @@ public class VeloMapsActivity extends FragmentActivity implements OnMapReadyCall
 
         }
 
-
-
-
+    }
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("keyList", mesStations);
     }
 
 
